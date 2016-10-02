@@ -1,0 +1,35 @@
+Zdefiniować klasy z poniższego programu:
+
+public class Test {
+
+  public static void main(String[] args) {
+
+    Pacjent[] pacjenci = { new ChoryNaGlowe("Janek"),
+                           new ChoryNaNoge("Edzio"),
+                           new ChoryNaDyspepsje("Marian")
+                         };
+
+    for (Pacjent p : pacjenci) {
+      System.out.println("Pacjent:     " + p.nazwisko() + '\n' +
+                         "Chory na:    " + p.choroba() + '\n' +
+                         "Zastosowano: " + p.leczenie() +"\n\n"
+                         );
+    }
+
+  }
+
+}
+w taki sposób, aby otrzymać w wyniku następujący wydruk:
+
+Pacjent:     Janek
+Chory na:    głowa
+Zastosowano: aspiryna
+Pacjent:     Edzio
+Chory na:    noga
+Zastosowano: gips
+Pacjent:     Marian
+Chory na:    dyspepsja
+Zastosowano: węgiel
+Uwaga: metody choroba() i leczenie() muszą być wywoływane polimorficznie.
+Uwaga: nazwy klas bez polskich znaków. Klasy z nazwami z polskimi znakaami nie będą sprawdzane.
+Uwaga: utworzonej przez generator projektów klasy Test nie wolno zmieniać.
