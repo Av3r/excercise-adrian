@@ -5,11 +5,13 @@ public class Country {
     private String name;
     private String capital;
     private int population;
+    private String imagePath;
 
-    public Country(String name, String capital, int population) {
+    public Country(String name, String capital, int population, String imagePath) {
         this.name = name;
         this.capital = capital;
         this.population = population;
+        this.imagePath = imagePath;
     }
 
     public String getName() {
@@ -22,5 +24,9 @@ public class Country {
 
     public int getPopulation() {
         return population;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 }

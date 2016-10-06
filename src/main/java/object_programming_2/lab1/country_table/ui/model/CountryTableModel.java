@@ -2,6 +2,7 @@ package object_programming_2.lab1.country_table.ui.model;
 
 import com.google.common.collect.Iterables;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class CountryTableModel extends AbstractTableModel {
                 return country.getCapital();
             case 2:
                 return country.getPopulation();
+            case 3:
+                return new ImageIcon(country.getImagePath());
             default:
                 return null;
         }
