@@ -1,6 +1,8 @@
 package object_programming_2.lab2.generics;
 import java.util.*;
 
+import static object_programming_2.lab2.generics.ListCreator.collectFrom;
+
 public class Main {
 
     public Main() {
@@ -25,8 +27,7 @@ public class Main {
             }
         };
 
-        return null;
-//        return collectFrom(src).when(sel).mapEvery(map);
+        return collectFrom(src).when(sel).mapEvery(map);
     }
 
     public List<Integer> test2(List<String> src) {
@@ -38,13 +39,12 @@ public class Main {
         };
         Mapper<String> map = new Mapper<String>() {
             @Override
-            public String map(String text) {
-                return text.length() + 10 + "";
+            public Integer map(String text) {
+                return text.length() + 10;
             }
         };
 
-        return null;
-//        return collectFrom(src).when(sel).mapEvery(map);
+        return collectFrom(src).when(sel).mapEvery(map);
     }
 
     public static void main(String[] args) {
