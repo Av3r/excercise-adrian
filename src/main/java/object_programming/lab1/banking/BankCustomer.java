@@ -17,6 +17,6 @@ public class BankCustomer {
     @Override
     public String toString() {
         return String.format("Klient: %s stan konta %.1f",
-                person.getName(),account.getBalance());
+                person.getName(), account.getBalance());
     }
 }

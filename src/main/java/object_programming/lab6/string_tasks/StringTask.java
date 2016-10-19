@@ -13,25 +13,25 @@ public class StringTask implements Runnable {
         this.text = text;
         this.count = count;
         this.taskState = TaskState.CREATED;
-        this.result="";
+        this.result = "";
         this.done = false;
-        this.interrupted=false;
+        this.interrupted = false;
     }
 
     @Override
     public void run() {
         taskState = TaskState.RUNNING;
         for (int i = 0; i < count; i++) {
-            if (!interrupted){
+            if (!interrupted) {
                 result += text;
-            }else {
-                taskState= TaskState.ABORTED;
+            } else {
+                taskState = TaskState.ABORTED;
                 done = true;
                 return;
             }
         }
-        taskState= TaskState.READY;
-        done=true;
+        taskState = TaskState.READY;
+        done = true;
     }
 
     public TaskState getState() {
@@ -43,8 +43,8 @@ public class StringTask implements Runnable {
         thread.start();
     }
 
-    public void abort(){
-        interrupted=true;
+    public void abort() {
+        interrupted = true;
     }
 
     public boolean isDone() {

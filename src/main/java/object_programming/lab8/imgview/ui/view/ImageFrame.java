@@ -6,7 +6,7 @@ public class ImageFrame extends JFrame {
 
     private ImagePanel imagePanel;
 
-    public ImageFrame(){
+    public ImageFrame() {
         setFrameUp();
         initializeComponents();
     }
@@ -14,11 +14,11 @@ public class ImageFrame extends JFrame {
     private void setFrameUp() {
         setTitle("Przegladarka obrazkow");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(500,500);
+        setSize(500, 500);
         setLocationRelativeTo(null);
     }
 
-    private void initializeComponents(){
+    private void initializeComponents() {
         imagePanel = new ImagePanel();
         add(imagePanel);
     }

@@ -7,7 +7,7 @@ public class ShoppingCart {
         this.customer = customer;
     }
 
-    public String toString(){
+    public String toString() {
         return "Wózek właściciel " + customer.getName() +
                 customer.toString();
     }

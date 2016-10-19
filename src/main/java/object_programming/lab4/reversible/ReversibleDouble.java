@@ -4,13 +4,13 @@ public class ReversibleDouble implements Reversible {
 
     private double number;
 
-    public ReversibleDouble(double number){
-        this.number=number;
+    public ReversibleDouble(double number) {
+        this.number = number;
     }
 
     @Override
     public void reverse() {
-        this.number= Math.pow(number, -1);
+        this.number = Math.pow(number, -1);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class ReversibleDouble implements Reversible {
         this.number += 10;
     }
 
-    public String toString(){
+    public String toString() {
         return String.valueOf(number);
     }
 }

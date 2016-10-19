@@ -16,7 +16,7 @@ public enum AvailableImagesExtensions {
         this.extension = extension;
     }
 
-    public static List<String> getAvailableExtensions(){
+    public static List<String> getAvailableExtensions() {
         return Stream.of(values())
                 .map(e -> e.extension)
                 .collect(Collectors.toList());

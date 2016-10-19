@@ -18,7 +18,7 @@ public class Osoba {
         return name;
     }
 
-    public String toString(){
+    public String toString() {
         return name;
     }
 

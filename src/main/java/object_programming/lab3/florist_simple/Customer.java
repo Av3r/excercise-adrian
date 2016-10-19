@@ -39,7 +39,7 @@ public class Customer {
         flowersToRemove.clear();
         boughtFlowers.forEach(flower -> {
             double flowerCost = flower.getCount() * priceList.getPrice(flower.getName());
-            if(this.amount >= flowerCost){
+            if (this.amount >= flowerCost) {
                 this.amount -= flowerCost;
             } else {
                 flowersToRemove.add(flower);

@@ -13,7 +13,7 @@ public class Letters {
         }
     }
 
-    private Thread createThread(char letter){
+    private Thread createThread(char letter) {
         return new LetterThread(letter, "Thread " + letter);
     }
 

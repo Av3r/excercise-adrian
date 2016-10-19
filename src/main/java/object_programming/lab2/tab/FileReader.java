@@ -13,7 +13,7 @@ public class FileReader {
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
 
-        while(scanner.hasNext()){
+        while (scanner.hasNext()) {
             numbers.add(scanner.nextInt());
         }
 

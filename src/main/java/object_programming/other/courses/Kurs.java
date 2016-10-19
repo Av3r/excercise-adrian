@@ -47,7 +47,7 @@ public class Kurs {
         return name;
     }
 
-    public int getNumberOfPeople(){
+    public int getNumberOfPeople() {
         return osoby.size();
     }
 

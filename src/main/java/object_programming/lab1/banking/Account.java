@@ -6,18 +6,23 @@ public class Account {
 
     private double balance;
 
+    public static void setInterestRate(double rate) {
+        if (rate < 0) return;
+        Account.rate = rate;
+    }
+
     public void deposit(double value) {
-        if(value <= 0) return;
+        if (value <= 0) return;
         this.balance += value;
     }
 
     public void withdraw(double value) {
-        if(value<= 0) return;
+        if (value <= 0) return;
         this.balance -= value;
     }
 
     public void transfer(Account toAccount, double value) {
-        if(value > balance) return;
+        if (value > balance) return;
         this.balance -= value;
         toAccount.deposit(value);
     }
@@ -28,10 +33,5 @@ public class Account {
 
     public double getBalance() {
         return balance;
-    }
-
-    public static void setInterestRate(double rate) {
-        if(rate < 0) return;
-        Account.rate = rate;
     }
 }

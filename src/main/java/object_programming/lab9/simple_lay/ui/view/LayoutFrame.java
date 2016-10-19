@@ -13,7 +13,7 @@ public class LayoutFrame extends JFrame {
     private void setFrameUp(LayoutManager layout) {
         setTitle("Layouts");
         setLayout(layout);
-        setSize(500,500);
+        setSize(500, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }

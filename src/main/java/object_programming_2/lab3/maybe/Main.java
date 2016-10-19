@@ -25,11 +25,11 @@ public class Main {
         m5.ifPresent(System.out::println);
 
         // Metoda map()
-//        Maybe<Integer> m6 = m5.map( n -> n +10 );
-//        System.out.println(m6);
+        Maybe<Integer> m6 = m5.map( n -> n +10 );
+        System.out.println(m6);
 
         // Metoda get()
-//        System.out.println(m6.get());
+        System.out.println(m6.get());
         try {
             System.out.println(m4.get());
         } catch(Exception exc) {
@@ -44,9 +44,9 @@ public class Main {
         else System.out.println("Wartość niedostępna");
 
         //MOŻNA NAPISAĆ
-//        String res = Maybe.of(num).map(n -> "Wartość wynosi: "+n)
-//                .orElse("Wartość niedostępna");
-//        System.out.println(res);
+        String res = Maybe.of(num).map(n -> "Wartość wynosi: "+n)
+                .orElse("Wartość niedostępna");
+        System.out.println(res);
 
         // I filter(...)
 

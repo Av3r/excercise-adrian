@@ -11,18 +11,18 @@ public class ListCreator<T> {
         this.elements = elements;
     }
 
-    public static <T> ListCreator collectFrom(List<T> list){
+    public static <T> ListCreator collectFrom(List<T> list) {
         return new ListCreator<>(list);
     }
 
-    public ListCreator<T> when(Selector<T> sel){
+    public ListCreator<T> when(Selector<T> sel) {
         List<T> filteredList = elements.stream()
                 .filter(sel::select)
                 .collect(Collectors.toList());
         return new ListCreator<>(filteredList);
     }
 
-    public List<Integer> mapEvery(Mapper<T> mapper){
+    public List<Integer> mapEvery(Mapper<T> mapper) {
         return elements.stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());

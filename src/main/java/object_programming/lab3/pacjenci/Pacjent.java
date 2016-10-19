@@ -7,7 +7,7 @@ public abstract class Pacjent {
         this.name = name;
     }
 
-    public String nazwisko(){
+    public String nazwisko() {
         return name;
     }
 

@@ -11,7 +11,7 @@ public class Rose extends Flower {
         super(count, COLOR, NAME);
     }
 
-    public String toString(){
+    public String toString() {
         PriceList pl = PriceList.getInstance();
         return String.format("%s, kolor: %s, ilość %d, cena %.1f",
                 getName(), getColor(), getCount(), pl.getPrice(getName()));
