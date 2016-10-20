@@ -1,23 +1,20 @@
 package object_programming_2.lab4.lamcomb;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class InputConverter<S> {
+public class InputConverter<T> {
 
-    private String fileName;
+    private T value;
 
-    public InputConverter(String fileName) {
-        this.fileName = fileName;
+    public InputConverter(T value) {
+        this.value = value;
     }
 
-    public List<String> convertBy(Function<String, List<String>>... converters){
-        return Arrays.stream(converters)
-                .map(function -> function.apply(fileName))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+    public <R> R convertBy(Function... functions) {
+        Object result = value;
+        for (Function function : functions) {
+            result = function.apply(result);
+        }
+        return (R) result;
     }
 }
