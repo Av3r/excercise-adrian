@@ -1,6 +1,5 @@
 package object_programming_2.lab5.s_xlist;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -81,6 +80,7 @@ public class XList<T> extends ArrayList<T> {
     }
 
     public XList<XList<String>> combine() {
+        //TODO
         XList<String> list1 = new XList<>("a", "X", "1");
         XList<String> list2 = new XList<>("b", "X", "1");
         XList<String> list3 = new XList<>("a", "Y", "1");
@@ -109,15 +109,39 @@ public class XList<T> extends ArrayList<T> {
     }
 
     public XList<String> collect(Function<XList<T>, String> function) {
-        String result = function.apply(this);
+        List<String> result = Lists.newArrayList();
+        for (int i = 0; i < size(); i++) {
+            result.add(function.apply((XList<T>) get(i)));
+        }
         return new XList<>(result);
     }
 
+    public void forEachWithIndex(Iterable<T, Integer> iterable){
+        for (int i = 0; i < size(); i++) {
+            iterable.apply(get(i), i);
+        }
+    }
+
     public String join() {
-        return join(" ");
+        //TODO
+//        String txt = "";
+//        for (int i = 0; i < size(); i++) {
+//            XList list = (XList) get(i);
+//            for (int j = 0; j < list.size(); j++) {
+//                txt += list.get(j);
+//            }
+//        }
+//        return txt;
+        return "TODO";
     }
 
     public String join(String delimiter) {
-        return Joiner.on(delimiter).join(this);
+        //TODO
+//        String result = "";
+//        for (int i = 0; i < size(); i++) {
+//            result += get(i) + delimiter;
+//        }
+//        return result;
+        return "TODO";
     }
 }

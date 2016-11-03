@@ -76,13 +76,13 @@ public class Main {
         System.out.println(j2.join(" "));
 
           // forEachWithIndex
-//        XList<Integer> lmod = XList.of(1,2,8, 10, 11, 30, 3, 4);
-//        lmod.forEachWithIndex( (e, i) -> lmod.set(i, e*2));
-//        System.out.println(lmod);
-//        lmod.forEachWithIndex( (e, i) -> { if (i % 2 == 0) lmod.remove(e); } );
-//        System.out.println(lmod);
-//        lmod.forEachWithIndex( (e, i) -> { if (i % 2 == 0) lmod.remove(i); } );
-//        System.out.println(lmod); // Pytanie: dlaczego mamy taki efekt?
+        XList<Integer> lmod = XList.of(1,2,8, 10, 11, 30, 3, 4);
+        lmod.forEachWithIndex( (e, i) -> lmod.set(i, e*2));
+        System.out.println(lmod);
+        lmod.forEachWithIndex( (e, i) -> { if (i % 2 == 0) lmod.remove(e); } );
+        System.out.println(lmod);
+        lmod.forEachWithIndex( (e, i) -> { if (i % 2 == 0) lmod.remove(i); } );
+        System.out.println(lmod); // Pytanie: dlaczego mamy taki efekt?
 
     }
 }
