@@ -1,7 +1,9 @@
 package object_programming_2.lab5.s_xlist;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 public class XList<T> extends ArrayList<T> {
 
     private static final String DEFAULT_DELIMITER = " ";
+    private static final String EMPTY_STRING = "";
 
     public XList(T... vals) {
         super(Arrays.stream(vals)
@@ -80,32 +83,20 @@ public class XList<T> extends ArrayList<T> {
     }
 
     public XList<XList<String>> combine() {
-        //TODO
-        XList<String> list1 = new XList<>("a", "X", "1");
-        XList<String> list2 = new XList<>("b", "X", "1");
-        XList<String> list3 = new XList<>("a", "Y", "1");
-        XList<String> list4 = new XList<>("b", "Y", "1");
-        XList<String> list5 = new XList<>("a", "Z", "1");
-        XList<String> list6 = new XList<>("b", "Z", "1");
-        XList<String> list7 = new XList<>("a", "X", "2");
-        XList<String> list8 = new XList<>("b", "X", "2");
-        XList<String> list9 = new XList<>("a", "Y", "2");
-        XList<String> list10 = new XList<>("b", "Y", "2");
-        XList<String> list11 = new XList<>("a", "Z", "2");
-        XList<String> list12 = new XList<>("b", "Z", "2");
-        return new XList<>(list1,
-                list2,
-                list3,
-                list4,
-                list5,
-                list6,
-                list7,
-                list8,
-                list9,
-                list10,
-                list11,
-                list12
-        );
+        List<Set<String>> result = Lists.newArrayList();
+        Iterator<List<String>> iterator = (Iterator<List<String>>) iterator();
+
+        while (iterator.hasNext()) {
+            List<String> next = iterator.next();
+            result.add(Sets.newHashSet(next));
+        }
+        Set<List<String>> resultList = Sets.cartesianProduct(result);
+
+        List<XList<String>> collect = resultList.stream()
+                .map(XList::new)
+                .collect(Collectors.toList());
+
+        return new XList<>(collect);
     }
 
     public XList<String> collect(Function<XList<T>, String> function) {
@@ -116,32 +107,17 @@ public class XList<T> extends ArrayList<T> {
         return new XList<>(result);
     }
 
-    public void forEachWithIndex(Iterable<T, Integer> iterable){
+    public void forEachWithIndex(Iterable<T, Integer> iterable) {
         for (int i = 0; i < size(); i++) {
             iterable.apply(get(i), i);
         }
     }
 
     public String join() {
-        //TODO
-//        String txt = "";
-//        for (int i = 0; i < size(); i++) {
-//            XList list = (XList) get(i);
-//            for (int j = 0; j < list.size(); j++) {
-//                txt += list.get(j);
-//            }
-//        }
-//        return txt;
-        return "TODO";
+        return join(EMPTY_STRING);
     }
 
     public String join(String delimiter) {
-        //TODO
-//        String result = "";
-//        for (int i = 0; i < size(); i++) {
-//            result += get(i) + delimiter;
-//        }
-//        return result;
-        return "TODO";
+        return Joiner.on(delimiter).join(this);
     }
 }
