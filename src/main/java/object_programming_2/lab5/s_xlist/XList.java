@@ -3,7 +3,6 @@ package object_programming_2.lab5.s_xlist;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import java.util.*;
 import java.util.function.Function;
@@ -82,21 +81,28 @@ public class XList<T> extends ArrayList<T> {
         return new XList<>(resultList);
     }
 
-    public XList<XList<String>> combine() {
-        List<Set<String>> result = Lists.newArrayList();
-        Iterator<List<String>> iterator = (Iterator<List<String>>) iterator();
+    public XList<XList<T>> combine() {
+        return cartesianProduct((XList<XList<T>>) this);
+    }
 
-        while (iterator.hasNext()) {
-            List<String> next = iterator.next();
-            result.add(Sets.newHashSet(next));
+    private XList<XList<T>> cartesianProduct(List<XList<T>> lists) {
+        XList<XList<T>> resultLists = new XList<>();
+        if (lists.isEmpty()) {
+            resultLists.add(new XList<>());
+            return resultLists;
+        } else {
+            List<T> firstList = lists.get(0);
+            List<XList<T>> remainingLists = cartesianProduct(lists.subList(1, lists.size()));
+            for (T condition : firstList) {
+                for (XList<T> remainingList : remainingLists) {
+                    XList<T> resultList = new XList<T>();
+                    resultList.add(condition);
+                    resultList.addAll(remainingList);
+                    resultLists.add(resultList);
+                }
+            }
         }
-        Set<List<String>> resultList = Sets.cartesianProduct(result);
-
-        List<XList<String>> collect = resultList.stream()
-                .map(XList::new)
-                .collect(Collectors.toList());
-
-        return new XList<>(collect);
+        return resultLists;
     }
 
     public XList<String> collect(Function<XList<T>, String> function) {
