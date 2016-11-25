@@ -32,18 +32,29 @@ public class Anagrams {
         for (WordWithLettersCount wordWithLettersCount : wordWithLettersCounts) {
             List<String> anagramsList = anagrams.getOrDefault(wordWithLettersCount.getLettersCount(), new ArrayList<>());
             anagramsList.add(wordWithLettersCount.getWord());
-            anagrams.put(wordWithLettersCount.getLettersCount(),anagramsList);
+            anagrams.put(wordWithLettersCount.getLettersCount(), anagramsList);
         }
 
         return anagrams.values().stream()
-                .sorted(Comparator.comparing(List::size))
+                .sorted(createListComparator())
                 .collect(Collectors.toList());
+    }
+
+    private Comparator<List<String>> createListComparator() {
+        return (list1, list2) -> {
+            Integer list1Size = list1.size();
+            Integer list2Size = list2.size();
+            if (list1Size.equals(list2Size)) {
+                return list1.get(0).compareTo(list2.get(0));
+            }
+            return list2Size.compareTo(list1Size);
+        };
     }
 
     public String getAnagramsFor(String wordToFind) {
         List<String> anagrams = null;
 
-        if(words.contains(wordToFind)) {
+        if (words.contains(wordToFind)) {
             anagrams = words.stream()
                     .filter(word -> !word.equals(wordToFind))
                     .filter(word -> isAnagram(word, wordToFind))
@@ -75,7 +86,7 @@ public class Anagrams {
     }
 
     private WordWithLettersCount getWordWithLettersCount(String word) {
-        return new WordWithLettersCount(word,getLettersCountFromWord(word));
+        return new WordWithLettersCount(word, getLettersCountFromWord(word));
     }
 
 }
