@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -38,7 +39,7 @@ public class Main {
 
         long end = System.currentTimeMillis();
         long total = end - start;
-        System.out.println(String.format("Execution took %d[ms] ", total));
+        System.out.println(String.format("Execution took: %d[s] ", TimeUnit.MILLISECONDS.toSeconds(total)));
         System.out.println("***************************************");
     }
 
