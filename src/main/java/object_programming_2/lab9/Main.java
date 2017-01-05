@@ -1,0 +1,18 @@
+package object_programming_2.lab9;
+
+import object_programming_2.lab9.controller.Controller;
+
+public class Main {
+
+    public static void main(String[] args) {
+        String dataDir = System.getProperty("user.home") + "/Modeling/data/";
+        String scriptDir = System.getProperty("user.home") + "/Modeling/scripts/";
+        Controller ctl = new Controller("Model1");
+        ctl.readDataFrom(dataDir + "data2.txt")
+                .runModel()
+                .runScriptFromFile(scriptDir + "script1.groovy");
+        String res= ctl.getResultsAsTsv();
+        System.out.println(res);
+
+    }
+}
