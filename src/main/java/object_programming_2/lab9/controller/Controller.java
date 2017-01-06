@@ -1,9 +1,13 @@
 package object_programming_2.lab9.controller;
 
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 import object_programming_2.lab9.model.Model1;
 import object_programming_2.lab9.model.RateModel;
-import object_programming_2.lab9.reflect.ReflectionInjector;
+import object_programming_2.lab9.model.TsvResultBuilder;
+import object_programming_2.lab9.reflect.ReflectionUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,31 +16,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class Controller {
 
-    private static final String YEARS_TEXT = "LATA";
+    private static final String YEARS_LABEL = "LATA";
     private static final String REPLACE_CHAR = ".";
     private static final String REPLACEMENT = ",";
     private static final String RATE_LABEL_PREFIX = "tw";
     private static final int LINES_TO_SKIP = 1;
+    private static final String YEARS_TEXT = "LL";
+    private static final String EXPORT_TEXT = "EKS";
+    private static final String PKB_TEXT = "PKB";
+    private static final String EXPORT_RATE = "ZDEKS";
 
     private String modelName;
     private Model1 model1;
+    private ReflectionUtils reflectionUtils;
+
+    private List<Integer> years;
+    private List<RateModel> rateModels;
+    private List<Double> zdeks;
 
     public Controller(String modelName) {
         this.modelName = modelName;
         model1 = new Model1();
     }
 
-
     public Controller readDataFrom(String fName) {
         try {
             List<String> lines = readAllLines(fName);
-            int[] years =  getAllYears(lines);
-            List<RateModel> rateModels = getRateModels(lines, years.length);
+            years = getAllYears(lines);
+            rateModels = getRateModels(lines, years.size());
 
-            ReflectionInjector reflectionInjector = new ReflectionInjector(model1,years,rateModels);
+            reflectionUtils = new ReflectionUtils(model1, years, rateModels);
+            reflectionUtils.injectValues();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,19 +59,68 @@ public class Controller {
     }
 
     public Controller runModel() {
+        model1.run();
         return this;
     }
 
     public void runScriptFromFile(String fname) {
-
+        try {
+            GroovyShell shell = prepareShell();
+            evaluateScriptFromFile(shell, fname);
+            saveScriptResult(shell);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void runScript(String script){
+    public void runScript(String script) {
+        try {
+            GroovyShell shell = prepareShell();
+            evaluateScriptFromString(shell, script);
+            saveScriptResult(shell);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private GroovyShell prepareShell() throws Exception {
+        Binding binding = new Binding();
+        binding.setVariable(YEARS_TEXT, years.size());
+        binding.setVariable(EXPORT_TEXT, reflectionUtils.retrieveArrayFieldFromModel(EXPORT_TEXT));
+        binding.setVariable(PKB_TEXT, reflectionUtils.retrieveArrayFieldFromModel(PKB_TEXT));
+
+        return new GroovyShell(binding);
+    }
+
+    private void evaluateScriptFromFile(GroovyShell shell, String filePath) throws IOException {
+        File scriptFile = new File(filePath);
+        shell.evaluate(scriptFile);
+    }
+
+    private void evaluateScriptFromString(GroovyShell shell, String script) {
+        shell.evaluate(script);
+    }
+
+    private void saveScriptResult(GroovyShell shell) {
+        double[] zdeks = (double[]) shell.getProperty(EXPORT_RATE);
+        this.zdeks = DoubleStream.of(zdeks)
+                .mapToObj(Double::valueOf)
+                .collect(Collectors.toList());
     }
 
     public String getResultsAsTsv() {
-        return " ";
+        try {
+            double[] pkb = reflectionUtils.retrieveArrayFieldFromModel(PKB_TEXT);
+            List<Double> pkbValues = DoubleStream.of(pkb)
+                    .mapToObj(Double::valueOf)
+                    .collect(Collectors.toList());
+
+            TsvResultBuilder tsvResultBuilder = new TsvResultBuilder(years, rateModels, pkbValues, zdeks);
+            return tsvResultBuilder.generateTsvResult();
+        } catch (Exception e) {
+            throw new RuntimeException("Could not generate Tsv result", e);
+        }
+
     }
 
     private List<String> readAllLines(String fName) throws IOException {
@@ -64,17 +128,16 @@ public class Controller {
         return Files.readAllLines(filePath);
     }
 
-    private int[] getAllYears(List<String> lines){
+    private List<Integer> getAllYears(List<String> lines) {
         String firstLine = lines.iterator().next();
         Scanner scanner = new Scanner(firstLine);
-        scanner.skip(YEARS_TEXT);
+        scanner.skip(YEARS_LABEL);
 
         List<Integer> years = new ArrayList<>();
-        while (scanner.hasNextInt()){
+        while (scanner.hasNextInt()) {
             years.add(scanner.nextInt());
         }
-        return years.stream()
-                .mapToInt(Integer::intValue).toArray();
+        return years;
     }
 
     private List<RateModel> getRateModels(List<String> lines, int years) {
@@ -90,12 +153,16 @@ public class Controller {
         String label = scanner.next();
 
         List<Double> values = new ArrayList<>();
-        while (scanner.hasNextDouble()){
+        while (scanner.hasNextDouble()) {
             values.add(scanner.nextDouble());
         }
 
-        if (label.contains(RATE_LABEL_PREFIX) && values.size() < years) {
-            extendValues(values, years);
+        if (values.size() < years) {
+            if (label.contains(RATE_LABEL_PREFIX)) {
+                extendValues(values, years);
+            } else {
+                extendWithZero(values, years);
+            }
         }
 
         double[] doubleValues = values.stream()
@@ -109,6 +176,13 @@ public class Controller {
         int howManyToAdd = years - values.size();
         for (int i = 0; i < howManyToAdd; i++) {
             values.add(lastValue);
+        }
+    }
+
+    private void extendWithZero(List<Double> values, int years) {
+        int howManyToAdd = years - values.size();
+        for (int i = 0; i < howManyToAdd; i++) {
+            values.add(0.0);
         }
     }
 

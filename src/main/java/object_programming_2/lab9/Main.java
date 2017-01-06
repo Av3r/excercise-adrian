@@ -13,6 +13,5 @@ public class Main {
                 .runScriptFromFile(scriptDir + "script1.groovy");
         String res= ctl.getResultsAsTsv();
         System.out.println(res);
-
     }
 }
