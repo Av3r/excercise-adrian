@@ -1,4 +1,4 @@
-package object_programming_2.lab10;
+package object_programming_2.lab10.offer;
 
 import java.util.List;
 import java.util.Scanner;

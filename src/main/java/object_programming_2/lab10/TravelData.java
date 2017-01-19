@@ -1,14 +1,20 @@
 package object_programming_2.lab10;
 
+import object_programming_2.lab10.offer.FormattedOffer;
+import object_programming_2.lab10.offer.Offer;
+import object_programming_2.lab10.offer.OfferFactory;
+import object_programming_2.lab10.parser.CurrencyParser;
+import object_programming_2.lab10.translation.CountryTranslation;
+import object_programming_2.lab10.translation.PlaceTranslation;
+
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Currency;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +29,10 @@ public class TravelData {
 
     private OfferFactory offerFactory;
     private Path filePath;
+    private List<FormattedOffer> allFormatedOffers;
 
     public TravelData(File dirPath) {
+        this.allFormatedOffers = new ArrayList<>();
         this.offerFactory = new OfferFactory();
         this.filePath = Paths.get(dirPath.toString(), DATA_FILE_NAME);
     }
@@ -36,28 +44,24 @@ public class TravelData {
 
             return offers.stream()
                     .map(offer -> mapToFormattedOffer(offer, locale, dateFormat))
+                    .map(FormattedOffer::toString)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException("Error while convering data", e);
         }
     }
 
-    private String mapToFormattedOffer(Offer offer, String locale, String dateFormat) {
-
+    private FormattedOffer mapToFormattedOffer(Offer offer, String locale, String dateFormat) {
         String country = translateCountry(offer.getCountry(), offer.getLocale(), locale);
         String startDate = parseToDate(offer.getStartDate(), dateFormat);
         String endDate = parseToDate(offer.getEndDate(), dateFormat);
         String place = translatePlace(offer.getPlace(), offer.getLocale(), locale);
-        String price = offer.getPrice();
+        String price = convertPrice(offer.getPrice(), offer.getLocale(), locale);
         String currency = offer.getCurrency();
 
-        return String.format("%s %s %s %s %s %s",
-                country,
-                startDate,
-                endDate,
-                place,
-                price,
-                currency);
+        FormattedOffer formattedOffer = new FormattedOffer(country, startDate, endDate, place, price, currency);
+        allFormatedOffers.add(formattedOffer);
+        return formattedOffer;
     }
 
     private String parseToDate(String dateToParse, String dateFormat) {
@@ -87,5 +91,25 @@ public class TravelData {
             return PlaceTranslation.translateToPolish(place);
         }
         return place;
+    }
+
+    private String convertPrice(String price, String actualLocale, String targetLocale) {
+        try {
+            if ((PL_SHORT_LOCALE.equals(actualLocale) || PL_LOCALE.equals(actualLocale)) && EN_GB_LOCALE.equals(targetLocale)) {
+                return CurrencyParser.parseFromPolishToEnglishPrice(price);
+            } else if (EN_GB_LOCALE.equals(actualLocale) && PL_LOCALE.equals(targetLocale)) {
+                return CurrencyParser.parseFromEnglishToPolishPrice(price);
+            } else if (EN_GB_LOCALE.equals(actualLocale)) {
+                return price;
+            } else {
+                return CurrencyParser.parseToPolishPrice(price);
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException("There was an exception while converting currency", e);
+        }
+    }
+
+    public List<FormattedOffer> getAllFormatedOffers() {
+        return allFormatedOffers;
     }
 }

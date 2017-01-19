@@ -1,8 +1,7 @@
-package object_programming_2.lab10;
+package object_programming_2.lab10.offer;
 
-public class Offer {
+public class FormattedOffer {
 
-    private String locale;
     private String country;
     private String startDate;
     private String endDate;
@@ -10,24 +9,18 @@ public class Offer {
     private String price;
     private String currency;
 
-    public Offer(String locale,
-                 String country,
+    public FormattedOffer(String country,
                  String startDate,
                  String endDate,
                  String place,
                  String price,
                  String currency) {
-        this.locale = locale;
         this.country = country;
         this.startDate = startDate;
         this.endDate = endDate;
         this.place = place;
         this.price = price;
         this.currency = currency;
-    }
-
-    public String getLocale() {
-        return locale;
     }
 
     public String getCountry() {
@@ -56,14 +49,12 @@ public class Offer {
 
     @Override
     public String toString() {
-        return "Offer{" +
-                "locale='" + locale + '\'' +
-                ", country='" + country + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", place='" + place + '\'' +
-                ", price='" + price + '\'' +
-                ", currency='" + currency + '\'' +
-                '}';
+        return String.format("%s %s %s %s %s %s",
+                country,
+                startDate,
+                endDate,
+                place,
+                price,
+                currency);
     }
 }

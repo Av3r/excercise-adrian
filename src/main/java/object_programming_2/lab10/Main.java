@@ -15,10 +15,11 @@ public class Main {
             for (String od : odlist) System.out.println(od);
         }
         // --- część bazodanowa
-        String url = " ";
+        String url = "jdbc:postgresql://localhost:5432/offers";
         Database db = new Database(url, travelData);
         db.create();
         db.showGui();
+
     }
 
 }
