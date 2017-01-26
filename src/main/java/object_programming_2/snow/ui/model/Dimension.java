@@ -3,11 +3,11 @@ package object_programming_2.snow.ui.model;
 public class Dimension {
 
     private final int width;
-    private final int heignt;
+    private final int height;
 
-    public Dimension(int width, int heignt) {
+    public Dimension(int width, int height) {
         this.width = width;
-        this.heignt = heignt;
+        this.height = height;
     }
 
     public int getWidth() {
@@ -15,6 +15,6 @@ public class Dimension {
     }
 
     public int getHeignt() {
-        return heignt;
+        return height;
     }
 }

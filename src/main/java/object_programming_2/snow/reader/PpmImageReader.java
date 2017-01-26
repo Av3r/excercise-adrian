@@ -1,13 +1,12 @@
 package object_programming_2.snow.reader;
 
-import object_programming_2.snow.ui.model.Dimension;
-import object_programming_2.snow.ui.model.RGBImage;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import object_programming_2.snow.ui.model.Dimension;
+import object_programming_2.snow.ui.model.RGBImage;
 
 public class PpmImageReader {
 
@@ -19,8 +18,8 @@ public class PpmImageReader {
 
         readUnusedLines(reader);
         Dimension dimension = readDimension(reader);
-        int rowsNumber = dimension.getWidth();
-        int columnsNumber = dimension.getHeignt();
+        int rowsNumber = dimension.getHeignt();
+        int columnsNumber = dimension.getWidth();
 
         return readImage(reader, rowsNumber, columnsNumber, dimension);
     }
@@ -36,17 +35,17 @@ public class PpmImageReader {
         int loc = 0;
         while ((line = reader.readLine()) != null) {
             String[] numbers = line.split(REGEX);
-            for (String number : numbers) {
+            for (int i = 0; i < numbers.length; i++) {
                 int rawLoc = loc / 3;
                 int row = rawLoc / columnsNumber;
                 int column = rawLoc % columnsNumber;
                 int color = loc % 3;
                 if (color == 0) {
-                    r[row][column] = Short.parseShort(number);
+                    r[row][column] = Short.parseShort(numbers[i]);
                 } else if (color == 1) {
-                    g[row][column] = Short.parseShort(number);
+                    g[row][column] = Short.parseShort(numbers[i]);
                 } else if (color == 2) {
-                    b[row][column] = Short.parseShort(number);
+                    b[row][column] = Short.parseShort(numbers[i]);
                 }
                 loc += 1;
             }

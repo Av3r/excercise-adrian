@@ -31,9 +31,9 @@ class ImagePanel extends JPanel {
     private void drawImage(Graphics g) {
         for (int i = 0; i < dimension.getWidth(); i++) {
             for (int j = 0; j < dimension.getHeight(); j++) {
-                short red = rgbImage.getRed()[i][j];
-                short green = rgbImage.getGreen()[i][j];
-                short blue = rgbImage.getBlue()[i][j];
+                short red = rgbImage.getRed()[j][i];
+                short green = rgbImage.getGreen()[j][i];
+                short blue = rgbImage.getBlue()[j][i];
                 Color color = new Color(red, green, blue);
                 g.setColor(color);
                 g.drawLine(i, j, i, j);
@@ -42,22 +42,23 @@ class ImagePanel extends JPanel {
     }
 
     private void drawMirroredImage(Graphics g) {
-        for (int i = (int) (dimension.getWidth()-1); i >= 0; i--) {
+        for (int i = 0; i < dimension.getWidth(); i++) {
             for (int j = 0; j < dimension.getHeight(); j++) {
-                short red = rgbImage.getRed()[i][j];
-                short green = rgbImage.getGreen()[i][j];
-                short blue = rgbImage.getBlue()[i][j];
+                double mirroredHeight = dimension.getHeight() - j - 1;
+                short red = rgbImage.getRed()[(int) mirroredHeight][i];
+                short green = rgbImage.getGreen()[(int) mirroredHeight][i];
+                short blue = rgbImage.getBlue()[(int) mirroredHeight][i];
                 Color color = new Color(red, green, blue);
                 g.setColor(color);
-                g.drawLine(i, (int) (j + dimension.getHeight()), i, (int) (j + dimension.getHeight()));
+                int height = (int) (j + dimension.getHeight());
+                g.drawLine(i, height, i, height);
             }
         }
     }
 
     private void setPanelSize(RGBImage image) {
         short[][] red = image.getRed();
-        Dimension dimension = new Dimension(red.length, red[0].length * 2);
-
+        Dimension dimension = new Dimension(red[0].length, red.length * 2);
         setMinimumSize(dimension);
         setMaximumSize(dimension);
         setPreferredSize(dimension);
